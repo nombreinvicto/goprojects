@@ -28,7 +28,17 @@ func main() {
 
 	// go assigns zero values
 	// to uninitialised values
-	var ivy person
-	fmt.Println(alex, ivy)
+	//var ivy person
+	alex.updateName("Jimmy")
+	alex.print()
 
+}
+
+// sample receiver func
+func (p person) print() {
+	fmt.Printf("%+v", p)
+}
+
+func (p_pointer *person) updateName(newName string) {
+	(*p_pointer).firstName = newName
 }
