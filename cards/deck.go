@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"strings"
+	"time"
 )
 
 // create a new type of deck which is a slice of strings
@@ -22,7 +24,6 @@ func newDeck() deck {
 			cards = append(cards, value+" of "+suit)
 		}
 	}
-
 	return cards
 }
 
@@ -64,4 +65,23 @@ func newDeckFromFile(filename string) deck {
 	sliceOfStrings := strings.Split(returnedString, ",")
 	return sliceOfStrings
 
+}
+
+// func to shuffle deck
+func (d deck) shuffle() {
+
+	// generate nanasecs since epoch
+	var randomSeed int64 = time.Now().UnixNano()
+	source := rand.NewSource(randomSeed)
+	randType := rand.New(source)
+
+	for i, _ := range d {
+
+		// if not specified, rand lib uses same exact seed each run
+		// so we need to change seed every run for better randomization
+		randi := randType.Intn(len(d) - 1)
+
+		// go also supports python like unpacking syntax
+		d[i], d[randi] = d[randi], d[i]
+	}
 }
