@@ -1,0 +1,5 @@
+resp is a struct
+Body is a field of resp struct
+Body is anything that implements io.ReadCloser interface
+Body is anything that implements Reader and Closer interface
+Body is anything that implements Read(p []byte) (n int, err error) method
