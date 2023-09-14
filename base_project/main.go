@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
-	fmt.Println("Hello World!")
+
+	for true {
+		fmt.Println("Hello World!")
+		d := time.Duration(10e8)
+		time.Sleep(d)
+	}
 }
