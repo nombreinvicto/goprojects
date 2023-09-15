@@ -2,14 +2,16 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"os"
 )
 
 func main() {
 
-	for true {
-		fmt.Println("Hello World!")
-		d := time.Duration(10e8)
-		time.Sleep(d)
+	jsonFile, err := os.Open("data.json")
+	if err != nil {
+		fmt.Println(err)
 	}
+
+	defer jsonFile.Close()
+
 }
