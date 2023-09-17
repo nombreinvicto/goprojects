@@ -7,7 +7,7 @@ func main() {
 	r, g, b := 124, 87, 3
 
 	// ...as #7c5703  (specifying hex format, fixed width, and leading zeroes)
-	fmt.Printf("", r, g, b)
+	fmt.Printf("%x", r, g, b)
 
 	// ...as rgb(124, 87, 3)
 	fmt.Printf("", r, g, b)
