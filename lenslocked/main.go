@@ -3,16 +3,32 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 )
 
-func main() {
-	http.HandleFunc("/", handlerFunc)
-	fmt.Println("starting server on :3000")
-	http.ListenAndServe(":3000", nil)
-}
+// declare global vars
+var portNumber int = 3000
 
 // http.Request is what our browser sends to the server
 // http.ResponseWriter used to write a response to the request
 func handlerFunc(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "<h1>Welcome to my awesome site!</h1>")
+	_, err := fmt.Fprint(w, "<h1>Welcome to my awesome site!</h1>")
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func main() {
+	// attach handler
+	http.HandleFunc("/", handlerFunc)
+
+	// start the server
+	serverString := fmt.Sprintf("http://localhost:%d/", portNumber)
+	fmt.Println(serverString)
+	err := http.ListenAndServe(fmt.Sprintf(":%d", portNumber),
+		nil)
+	if err != nil {
+		fmt.Println("Error: ", err)
+		os.Exit(-1)
+	}
 }
