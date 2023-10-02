@@ -9,6 +9,16 @@ import (
 // declare global vars
 var portNumber int = 3000
 
+func pathHandler(w http.ResponseWriter, r *http.Request) {
+	// creating a basic router by ourself
+	switch r.URL.Path {
+	case "/":
+		homeHandler(w, r)
+	case "/contact":
+		contactHandler(w, r)
+	}
+}
+
 // http.Request is what our browser sends to the server
 // http.ResponseWriter used to write a response to the request
 func homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -24,7 +34,8 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 // handler for the contact page
 func contactHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_, err := fmt.Fprint(w, "<h1>Contact Page</h1><p>email:<a href=\"mailto:mhasan3.com\"")
+	_, err := fmt.Fprint(w, "<h1>Contact Page</h1><p>email:"+
+		"<a href=\"mailto:mhasan3.com\"")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -32,8 +43,8 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	// attach handler
-	http.HandleFunc("/", homeHandler)
-	http.HandleFunc("/contact", contactHandler)
+	http.HandleFunc("/", pathHandler)
+	http.HandleFunc("/contact", pathHandler)
 
 	// start the server
 	serverString := fmt.Sprintf("http://localhost:%d/", portNumber)
