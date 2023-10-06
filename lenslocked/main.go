@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
-	"html/template"
+	"lenslocked/controllers"
+	"lenslocked/views"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -12,46 +13,29 @@ import (
 // declare global vars
 var portNumber int = 3000
 
-// homeHandler is the handler func for homepage
-// http.Request is what our browser sends to the server
-// http.ResponseWriter used to write a response to the request
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	templateFilepath := filepath.Join("templates", "home.gohtml")
-	executeTemplate(w, templateFilepath)
-}
-
-// handler for the contact page
-func contactHandler(w http.ResponseWriter, r *http.Request) {
-	templateFilepath := filepath.Join("templates", "contact.gohtml")
-	executeTemplate(w, templateFilepath)
-}
-
-// common execute template func
-func executeTemplate(w http.ResponseWriter, filepath string) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	tpl, err := template.ParseFiles(filepath)
-	if err != nil {
-		fmt.Printf("error parsing template %v", err)
-		http.Error(w, "error parsing template",
-			http.StatusInternalServerError)
-		return
-	}
-
-	err = tpl.Execute(w, nil)
-	if err != nil {
-		fmt.Printf("error executing template %v", err)
-		http.Error(w, "error executing template",
-			http.StatusInternalServerError)
-		return
-	}
-}
-
 func main() {
 
 	// instantiate chi router
 	r := chi.NewRouter()
-	r.Get("/", homeHandler)
-	r.Get("/contact", contactHandler)
+
+	// goal: parse and check template integrity before even starting server
+	// design philosophy = get rendered templates from views
+	// then allow controllers to send the rendered templates
+	// r.Method allows us to accept http.Hanlder
+	// r.Get only accepts http.HandlerFunc
+	homeTpl, err := views.Parse(filepath.Join("templates", "home.gohtml"))
+	r.Method(http.MethodGet, "/", controllers.Static{Template: homeTpl})
+	if err != nil {
+		panic(err)
+	}
+
+	contactTpl, err := views.Parse(filepath.Join("templates", "contact.gohtml"))
+	r.Method(http.MethodGet, "/contact", controllers.Static{Template: contactTpl})
+	if err != nil {
+		panic(err)
+	}
+
+	// finally handling the nofound page
 	r.NotFound(func(writer http.ResponseWriter, request *http.Request) {
 		http.Error(writer, "Page Not Found", http.StatusNotFound)
 	})
@@ -59,7 +43,7 @@ func main() {
 	// pass nil to use default serve mux, mux = router
 	serverString := fmt.Sprintf("http://localhost:%d/", portNumber)
 	fmt.Println(serverString)
-	err := http.ListenAndServe(fmt.Sprintf(":%d", portNumber), r)
+	err = http.ListenAndServe(fmt.Sprintf(":%d", portNumber), r)
 	if err != nil {
 		fmt.Println("Error: ", err)
 		os.Exit(-1)
