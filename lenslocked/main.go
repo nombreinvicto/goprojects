@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"lenslocked/controllers"
+	"lenslocked/templates"
 	"lenslocked/views"
 	"net/http"
 	"os"
-	"path/filepath"
 )
 
 // declare global vars
@@ -23,17 +23,11 @@ func main() {
 	// then allow controllers to send the rendered templates
 	// r.Method allows us to accept http.Hanlder
 	// r.Get only accepts http.HandlerFunc
-	homeTpl, err := views.Parse(filepath.Join("templates", "home.gohtml"))
+	homeTpl := views.Must(views.ParseFS(templates.FS, "home.gohtml"))
 	r.Method(http.MethodGet, "/", controllers.Static{Template: homeTpl})
-	if err != nil {
-		panic(err)
-	}
 
-	contactTpl, err := views.Parse(filepath.Join("templates", "contact.gohtml"))
+	contactTpl := views.Must(views.ParseFS(templates.FS, "contact.gohtml"))
 	r.Method(http.MethodGet, "/contact", controllers.Static{Template: contactTpl})
-	if err != nil {
-		panic(err)
-	}
 
 	// finally handling the nofound page
 	r.NotFound(func(writer http.ResponseWriter, request *http.Request) {
@@ -43,7 +37,7 @@ func main() {
 	// pass nil to use default serve mux, mux = router
 	serverString := fmt.Sprintf("http://localhost:%d/", portNumber)
 	fmt.Println(serverString)
-	err = http.ListenAndServe(fmt.Sprintf(":%d", portNumber), r)
+	err := http.ListenAndServe(fmt.Sprintf(":%d", portNumber), r)
 	if err != nil {
 		fmt.Println("Error: ", err)
 		os.Exit(-1)

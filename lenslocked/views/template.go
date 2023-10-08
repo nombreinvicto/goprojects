@@ -5,6 +5,7 @@ package views
 import (
 	"fmt"
 	"html/template"
+	"io/fs"
 	"net/http"
 )
 
@@ -35,4 +36,22 @@ func Parse(filepath string) (Template, error) {
 	return Template{
 		htmlTpl: htmlTpl,
 	}, nil
+}
+
+// ParseFS fun to use in case of embedded templates
+func ParseFS(fs fs.FS, pattern string) (Template, error) {
+	htmlTpl, err := template.ParseFS(fs, pattern)
+	if err != nil {
+		return Template{}, fmt.Errorf("error parsing template %w", err)
+	}
+	return Template{
+		htmlTpl: htmlTpl,
+	}, nil
+}
+
+func Must(t Template, err error) Template {
+	if err != nil {
+		panic(err)
+	}
+	return t
 }
