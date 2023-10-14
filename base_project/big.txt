@@ -1,0 +1,11 @@
+line 1 mahmud
+line 2 irene
+line 3 ivy
+line 4 mom
+line 5 dad
+line 6 mama
+line 7 chacha
+line 8 kaka
+line 9 dada
+line 10 abbu
+line 11 ammu
