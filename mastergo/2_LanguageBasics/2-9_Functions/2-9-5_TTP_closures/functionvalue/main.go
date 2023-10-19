@@ -10,6 +10,12 @@ func newClosures() (func(), func() int) {
 	// Now we create and return two closures.
 
 	// TODO - add coe here
+	return func() {
+			a = 5
+		}, func() int {
+			a = a * 7
+			return a
+		}
 }
 
 func main() {

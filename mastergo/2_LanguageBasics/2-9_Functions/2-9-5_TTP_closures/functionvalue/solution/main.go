@@ -3,22 +3,35 @@
 
 ## Intro
 
-As you learned in the lecture about function values and closures, a closure can reference the outer function's variables even after the outer function has terminated.
+As you learned in the lecture about
+function values and closures, a closure
+can reference the outer function's
+variables even after the outer function has terminated.
 
-But what happens if the outer function generates and returns *two* closures?
+But what happens if the outer
+function generates and returns *two* closures?
 
-Do they access the same outer variables, or does each of them get its own copy?
+Do they access the same outer variables,
+or does each of them get its own copy?
 
 ## Your task
 
-Write a function that returns two closures. Both closures shall access a variable defined in the outer function.
+Write a function that returns two closures.
+Both closures shall access a variable defined in the outer function.
 
-Then write code that reveals whether both closures use the same instance of the outer variable, or whether each of them has its own individual instance.
+Then write code that reveals whether
+both closures use the same instance
+of the outer variable, or whether each
+of them has its own individual instance.
 
 
 ## Solution
 
-Here is one possible solution to the task. There are of course many ways to create this code, so you might have came up with a different approach. That's absolutely ok, as long as your code comes to the same conclusion as the following code.
+Here is one possible solution to the task.
+There are of course many ways to create this
+code, so you might have came up with a different
+approach. That's absolutely ok, as long as your
+code comes to the same conclusion as the following code.
 
 */
 
