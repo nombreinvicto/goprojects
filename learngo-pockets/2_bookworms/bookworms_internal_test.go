@@ -101,3 +101,18 @@ func TestLoadBookworms(t *testing.T) {
 		})
 	}
 }
+
+// equalBooksCount is a helper that tests whether
+// 2 booksCount maps are equal or not
+func equalBooksCount(got, want map[Book]uint) bool {
+	if len(got) != len(want) {
+		return false
+	}
+	for book, targetCount := range want {
+		count, ok := got[book]
+		if !ok || targetCount != count {
+			return false
+		}
+	}
+	return true
+}
