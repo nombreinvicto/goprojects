@@ -54,9 +54,17 @@ func booksCount(bookworms []Bookworm) map[Book]uint {
 	return bookCounter
 }
 
+// /////////////////////////////////////////////////
 func sortBooks(books []Book) []Book {
+	// sort.Slice modifies the slice in place
+
 	sort.Slice(books, func(i, j int) bool {
+		// key function must return bool
+		// which is whether item at i (where i < j)
+		// should appear before item at j
 		if books[i].Author != books[j].Author {
+			// if book Author at i < book Author at j
+			// then item at i shud be before item at j
 			return books[i].Author < books[j].Author
 		}
 		return books[i].Title < books[j].Title
